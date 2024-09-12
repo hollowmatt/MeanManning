@@ -1,5 +1,5 @@
 const homeList = (req, res) => {
-  res.render('index', {title: 'Home Page' });
+  res.render('locations-list', {title: 'Home Page' });
 };
 
 const locationInfo = (req, res) => {
