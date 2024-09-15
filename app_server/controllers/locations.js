@@ -2,7 +2,34 @@ const dotenv = require('dotenv');
 dotenv.config();
 const API = process.env.API;
 const homeList = (req, res) => {
-  res.render('locations-list', {title: 'Home Page' });
+  res.render('locations-list', {
+    title: 'Home Page',
+    pageHeader: {
+      title: 'Loc8r',
+      strapLine: 'Find places to work with wifi near you'
+    },
+    locations: [{
+      name: 'Starcups',
+      address: '125 High Street, Reading, Rg6 1PS',
+      rating: 3,
+      facilities: ['Hot Drinks', 'Food', 'Premium WiFi'],
+      distance: '100m'
+    },
+    {
+      name: 'Cafe Hero',
+      address: '125 High Street, Reading, RG6 1PS',
+      rating: 4,
+      facilities: ['Hot drinks', 'Food', 'Premium wifi'],
+      distance: '200m'
+    },
+    {
+      name: 'Burger Queen',
+      address: '125 High Street, Reading, RG6 1PS',
+      rating: 2,
+      facilities: ['Food', 'Premium wifi'],
+      distance: '250m'
+    }]
+  });
 };
 
 const locationInfo = (req, res) => {
