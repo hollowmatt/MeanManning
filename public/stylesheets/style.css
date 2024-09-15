@@ -68,6 +68,10 @@ legend {
   border-color: #911821;
 }
 
+.form-group.row {
+  margin-bottom: 10px;
+}
+
 h4 a, h4 a:hover {
   color: #fff;
 }
