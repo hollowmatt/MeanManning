@@ -8,6 +8,9 @@ const homeList = (req, res) => {
       title: 'Loc8r',
       strapLine: 'Find places to work with wifi near you'
     },
+    sidebar: "Looking for wifi and a seat? Loc8r helps you find places to " + 
+      "work when out and about. Perhaps with coffee, cake or a pint? " +
+      "Let Loc8r help you find the place you're looking for.",
     locations: [{
       name: 'Starcups',
       address: '125 High Street, Reading, Rg6 1PS',
