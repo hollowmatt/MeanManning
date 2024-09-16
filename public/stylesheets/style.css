@@ -68,6 +68,16 @@ legend {
   border-color: #911821;
 }
 
+.badge-warning {
+  color: black;
+  background-color: yellow;
+  boarder-color: yellow;
+}
+
+.form-group.row {
+  margin-bottom: 10px;
+}
+
 h4 a, h4 a:hover {
   color: #fff;
 }
