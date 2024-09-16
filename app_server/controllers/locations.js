@@ -36,11 +36,46 @@ const homeList = (req, res) => {
 };
 
 const locationInfo = (req, res) => {
-  res.render('location-info', 
-    {
+  res.render('location-info',{
       title: 'Detail Page', 
-      mapurl:`https://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x350&sensor=false&markers=51.455041,-0.9690884&scale=2&key=${API}`
-    });
+      pageHeader: {
+        title: 'Starcups',
+        rating: 3,
+        address: '125 High Street, Reading, Rg6 1PS'
+      },
+      sidebarLead: "Starcups is on Loc8r because it has accessible wifi and space to sit down with your laptop and get some work done.",
+      sidebarSub: "If you've been and you like it - or if you don't - please leave a review to help other people just like you.",
+      pageBody: {
+        storeInfo: {
+          title: 'Opening Hours',
+          weekdays: 'Monday - Friday: 7:00am - 7:00pm',
+          saturdays: 'Saturday: 8:00am - 5:00pm',
+          sundays: 'Sunday: closed'
+        },
+        facilities: {
+          title: 'Facilities',
+          amenities: ['Hot Drinks', 'Food', 'Premium WiFi']
+        }, 
+        location: {
+          title: 'Location map',
+          mapurl:`https://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x350&sensor=false&markers=51.455041,-0.9690884&scale=2&key=${API}`
+        }
+      },
+      reviews: [
+        {
+          rating: 3,
+          author: 'Simon Holmes',
+          date: '16 February, 2017',
+          comment: 'What a great place'
+        },
+        {
+          rating: 3,
+          author: 'Charles Parker',
+          date: '14 February, 2017',
+          comment: 'Killer coffee'
+        }
+      ],
+  });
 };
 
 const addReview = (req, res) => {
