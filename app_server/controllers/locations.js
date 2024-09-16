@@ -79,7 +79,12 @@ const locationInfo = (req, res) => {
 };
 
 const addReview = (req, res) => {
-  res.render('location-review-form', {title: 'Add Review Page' });
+  res.render('location-review-form', {
+    title: 'Add Review Page',
+    pageHeader: {
+      title: 'Review Starcups'
+    }
+  });
 };
 
 module.exports = {
