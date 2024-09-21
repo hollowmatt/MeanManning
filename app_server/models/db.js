@@ -1,3 +1,4 @@
+require('./locations');
 const { call } = require("../../app");
 const dbConfig = require("./db.config");
 const mongoose = require('mongoose');
