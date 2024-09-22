@@ -1,9 +1,22 @@
+require('./locations');
+const { call } = require("../../app");
 const dbConfig = require("./db.config");
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const db = {};
-db.mongoose = mongoose;
-db.url = dbConfig.url;
+mongoose.connect(dbConfig.url)
+.then(() => console.log('connected to Mongo'))
+.catch(err => console.error('Error connecting: ', err));
 
-module.exports = db;
+//shutdown
+const gracefulShutdown = (msg) => {
+  mongoose.connection.close();
+  console.log(`Mongoose disconnected through ${msg}`);
+};
+
+process.once('SIGUSR2', () => {
+  gracefulShutdown('nodemon restart');
+});
+process.on('SIGINT', () => {
+  gracefulShutdown('app termination');
+});
