@@ -41,12 +41,14 @@ const locationSchema = new mongoose.Schema({
   facilities: [String],
   coords: {
     type: {
-      type: string
+      type: String
     },
     coordinates: [number]
   },
   openTimes: [openingTimeSchema],
   reviews: [reviewSchema]
 });
+
+mongoose.model('Location', locationSchema);
 
 locationSchema.index({coords: '2dsphere'});
