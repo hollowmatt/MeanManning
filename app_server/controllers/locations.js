@@ -36,46 +36,58 @@ const homeList = (req, res) => {
 };
 
 const locationInfo = (req, res) => {
-  res.render('location-info',{
-      title: 'Detail Page', 
-      pageHeader: {
-        title: 'Starcups',
+  res.render('location-info',
+    {
+      title: 'Starcups',
+       pageHeader: {
+        title: 'Loc8r',
+      },
+      sidebar: {
+        context: 'is on Loc8r because it has accessible wifi and space to sit down with your laptop and get some work done.',
+        callToAction: 'If you\'ve been and you like it - or if you don\'t - please leave a review to help other people just like you.'
+      },
+      location: {
+        name: 'Starcups',
+        address: '125 High Street, Reading, RG6 1PS',
         rating: 3,
-        address: '125 High Street, Reading, Rg6 1PS'
-      },
-      sidebarLead: "Starcups is on Loc8r because it has accessible wifi and space to sit down with your laptop and get some work done.",
-      sidebarSub: "If you've been and you like it - or if you don't - please leave a review to help other people just like you.",
-      pageBody: {
-        storeInfo: {
-          title: 'Opening Hours',
-          weekdays: 'Monday - Friday: 7:00am - 7:00pm',
-          saturdays: 'Saturday: 8:00am - 5:00pm',
-          sundays: 'Sunday: closed'
-        },
-        facilities: {
-          title: 'Facilities',
-          amenities: ['Hot Drinks', 'Food', 'Premium WiFi']
-        }, 
-        location: {
-          title: 'Location map',
-          mapurl:`https://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x350&sensor=false&markers=51.455041,-0.9690884&scale=2&key=${API}`
-        }
-      },
-      reviews: [
-        {
-          rating: 3,
-          author: 'Simon Holmes',
-          date: '16 February, 2017',
-          comment: 'What a great place'
-        },
-        {
-          rating: 3,
-          author: 'Charles Parker',
-          date: '14 February, 2017',
-          comment: 'Killer coffee'
-        }
-      ],
-  });
+        facilities: ['Hot drinks', 'Food', 'Premium wifi'],
+        coords: {lat: 51.455041, lng: -0.9690884},
+        api: `${API}`,
+        openingTimes: [
+          {
+            days: 'Monday - Friday',
+            opening: '7:00am',
+            closing: '7:00pm',
+            closed: false
+          },
+          {
+            days: 'Saturday',
+            opening: '8:00am',
+            closing: '5:00pm',
+            closed: false
+          },
+          {
+            days: 'Sunday',
+            closed: true
+          }
+        ],
+        reviews: [
+          {
+            author: 'Simon Holmes',
+            rating: 5,
+            timestamp: '16 July 2013',
+            reviewText: 'What a great place. I can\'t say enough good things about it.'
+          },
+          {
+            author: 'Charlie Chaplin',
+            rating: 3,
+            timestamp: '16 June 2013',
+            reviewText: 'It was okay. Coffee wasn\'t great, but the wifi was fast.'
+          }
+        ]
+      }
+    }
+  );
 };
 
 const addReview = (req, res) => {
