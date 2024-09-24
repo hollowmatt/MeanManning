@@ -43,7 +43,7 @@ const locationSchema = new mongoose.Schema({
     type: {
       type: String
     },
-    coordinates: [number]
+    coordinates: [Number]
   },
   openTimes: [openingTimeSchema],
   reviews: [reviewSchema]
