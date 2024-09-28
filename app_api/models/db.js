@@ -2,6 +2,7 @@ require('./locations');
 const { call } = require("../../app");
 const dbConfig = require("./db.config");
 const mongoose = require('mongoose');
+mongoose.set("strictQuery", false);
 mongoose.Promise = global.Promise;
 
 mongoose.connect(dbConfig.url)
