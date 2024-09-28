@@ -15,19 +15,23 @@ const locationsCreate = (req, res) => {
     .json({"status": "locationsCreate: post success"});
 };
 async function locationsReadOne (req, res) { 
-  const location = await Loc
-    .findById(req.params.locationId)
-    .exec();
-  if (!location) {
+  try {
+      const location = await Loc
+      .findById(req.params.locationId)
+      .exec();
+    if (!location) {
+      return res
+      .status(404)
+      .json({"message": "location not found"});
+    } else {
     return res
-    .status(404)
-    .json({"message": "location not found"});
-  } else {
-  return res
-    .status(200)
-    .json(location);
+      .status(200)
+      .json(location);
+    }
+  } catch (err) {
+    return res.status(200).json({"message": "invalid id input"});
   }
-};
+}
 
 const locationsUpdateOne = (req, res) => {
   res
