@@ -25,7 +25,7 @@ async function locationsReadOne (req, res) {
       .json({"message": "location not found"});
     } else {
     return res
-      .status(200)
+      .status(404)
       .json(location);
     }
   } catch (err) {
