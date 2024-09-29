@@ -25,11 +25,11 @@ async function locationsReadOne (req, res) {
       .json({"message": "location not found"});
     } else {
     return res
-      .status(404)
+      .status(200)
       .json(location);
     }
   } catch (err) {
-    return res.status(200).json({"message": "invalid id input"});
+    return res.status(404).json({"message": "invalid id input"});
   }
 }
 
