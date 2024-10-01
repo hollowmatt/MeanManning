@@ -1,8 +1,45 @@
 const mongoose = require('mongoose');
 const Loc = mongoose.model('Location');
 
-const reviewsCreate = (req, res) => {};
-
+async function reviewsCreate(req, res) {
+  const locId = req.params.locationId;
+  if(locId) {
+    try{
+      const location = await Loc
+        .findById(locId)
+        .select('reviews')
+        .exec();
+      await doAddReview(req, res, location);
+    } catch(err) {
+      res
+        .status(400)
+        .json({"message": "fail to create", "error": err});
+    }
+  } else {
+    res
+      .status(404)
+      .json({"message": "location not provided"});
+  }
+};
+async function doAddReview(req, res, location) {
+  console.log(req.body);
+  if(!location) {
+    res
+      .status(404)
+      .json({"message":"location not found"});
+  } else {
+    const {author, rating, reviewText} = req.body;
+    location.reviews.push({
+      author,
+      rating,
+      reviewText
+    });
+    location.save();
+    res
+      .status(201)
+      .json({"message":"review added"});
+  }
+}
 async function reviewsReadOne (req, res) {
   try {
     const location = await Loc
