@@ -23,7 +23,7 @@ async function locationsCreate(req, res) {
           parseFloat(req.body.lat)
         ]
       },
-      openingTimes: [
+      openTimes: [
         {
           days: req.body.days1,
           opening: req.body.opening1,
