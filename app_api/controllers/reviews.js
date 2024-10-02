@@ -35,6 +35,7 @@ async function doAddReview(req, res, location) {
       reviewText
     });
     location.save();
+    updateAvgRating(location._id);
     res
       .status(201)
       .json({"message":"review added"});
@@ -78,6 +79,20 @@ async function reviewsReadOne (req, res) {
     }
 }
 
+async function updateAvgRating(locationId) {
+  try {
+    loc = await Loc.findById(locationId)
+      .select('rating reviews')
+      .exec();
+    setAvgRating(loc);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function setAvgRating(location) {
+  
+}
 const reviewsUpdateOne = (req, res) => {};
 const reviewsDeleteOne = (req, res) => {};
 
