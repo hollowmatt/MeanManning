@@ -91,7 +91,19 @@ async function updateAvgRating(locationId) {
 }
 
 async function setAvgRating(location) {
-  
+  if (location.reviews && location.reviews.length > 0) {
+    const count = location.reviews.length;
+    const total = location.reviews.reduce((acc, {rating}) => {
+      return acc + rating;
+    }, 0);
+    location.rating = parseInt(total/count, 10);
+    try {
+      await location.save();
+      console.log(`avg rating updated to ${location.rating}`);
+    } catch(err) {
+      console.log(err);
+    }
+  }
 }
 const reviewsUpdateOne = (req, res) => {};
 const reviewsDeleteOne = (req, res) => {};
