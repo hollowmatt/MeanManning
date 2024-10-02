@@ -117,9 +117,25 @@ async function locationsUpdateOne(req, res) {
   }
 }
 async function locationsDeleteOne(req, res) {
-  res
-    .status(200)
-    .json({"status": "locationsDeleteOne: delete success"});
+  if(!req.params) {
+    return res
+      .status(404)
+      .json({"message":"Location not found - location ID required"});
+  }
+  try {
+    const locId = req.params.locationId;
+    console.log(locId);
+    await Loc
+      .findByIdAndRemove(locId)
+      .exec();
+    return res
+      .status(200)
+      .json({"status": "locationsDeleteOne: delete success"});
+  } catch(err) {
+    return res
+      .status(400)
+      .json({"message": "failed to delete"});
+  }
 }
 
 module.exports = {
