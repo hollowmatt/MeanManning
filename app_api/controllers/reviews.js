@@ -20,7 +20,8 @@ async function reviewsCreate(req, res) {
       .status(404)
       .json({"message": "location not provided"});
   }
-};
+}
+
 async function doAddReview(req, res, location) {
   console.log(req.body);
   if(!location) {
@@ -41,6 +42,7 @@ async function doAddReview(req, res, location) {
       .json({"message":"review added"});
   }
 }
+
 async function reviewsReadOne (req, res) {
   try {
     const location = await Loc
@@ -105,6 +107,7 @@ async function setAvgRating(location) {
     }
   }
 }
+
 async function reviewsUpdateOne(req, res){
   if (!req.params.locationId || !req.params.reviewId) {
     return res
@@ -148,8 +151,48 @@ async function reviewsUpdateOne(req, res){
         "Error":err
       });
   }
-};
-const reviewsDeleteOne = (req, res) => {};
+}
+
+async function reviewsDeleteOne(req, res){
+  const {locationId, reviewId} = req.params;
+  if(!locationId || !reviewId){
+    return res
+      .status(404)
+      .json({"message":"not found: locationId and reviewId required"});
+  }
+  try {
+    const location = await Loc
+      .findById(locationId)
+      .select('reviews')
+      .exec();
+    if(!location) {
+      return res
+        .status(404)
+        .json({"message":"location not found"});
+    } 
+    if(location.reviews && location.reviews.length > 0) {
+      if(!location.reviews.id(reviewId)) {
+        return res
+          .status(404)
+          .json({"message":"review not found"});
+      } else {
+        review = location.reviews.id(reviewId).deleteOne();
+        location.save();
+        updateAvgRating(location._id);
+        return res
+          .status(204)
+          .json(null);
+      }
+    }
+  } catch(err) {
+    return res
+      .status(400)
+      .json({
+        "message":"failed to delete",
+        "Error":err
+      });
+  }
+}
 
 module.exports = {
   reviewsCreate,
