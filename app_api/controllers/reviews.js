@@ -125,7 +125,6 @@ async function reviewsUpdateOne(req, res){
     }
     if(location.reviews && location.reviews.length > 0) {
       const review = location.reviews.id(req.params.reviewId);
-      console.log(review);
       if(!review) {
         return res
           .status(404)
