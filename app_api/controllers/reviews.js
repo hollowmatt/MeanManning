@@ -105,7 +105,50 @@ async function setAvgRating(location) {
     }
   }
 }
-const reviewsUpdateOne = (req, res) => {};
+async function reviewsUpdateOne(req, res){
+  if (!req.params.locationId || !req.params.reviewId) {
+    return res
+      .status(404)
+      .json({
+        "message": "not found: locationId and reviewId are both required"
+      });
+  }
+  try {
+    const location = await Loc
+      .findById(req.params.locationId)
+      .select('reviews')
+      .exec();
+    if(!location) {
+      return res
+        .status(404)
+        .json({"message":"location not found"});
+    }
+    if(location.reviews && location.reviews.length > 0) {
+      const review = location.reviews.id(req.params.reviewId);
+      if(!thisReview) {
+        return res
+          .status(404)
+          .json({"message":"review not found"});
+      } else {
+        review.author = req.body.author;
+        review.rating = req.body.rating;
+        review.reviewText = req.body.reviewText;
+        location.save();
+        updateAvgRating(location._id);
+        return res
+          .status(200)
+          .json(review);
+      }
+    }
+  } catch(err) {
+    return res
+      .status(400)
+      .json({
+        "message":"An error has occurred",
+        "Error":err
+      });
+  }
+};
 const reviewsDeleteOne = (req, res) => {};
 
 module.exports = {
