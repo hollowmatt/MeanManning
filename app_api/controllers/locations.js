@@ -126,7 +126,7 @@ async function locationsDeleteOne(req, res) {
     const locId = req.params.locationId;
     console.log(locId);
     await Loc
-      .findByIdAndRemove(locId)
+      .findByIdAndDelete(locId)
       .exec();
     return res
       .status(200)
