@@ -8,14 +8,14 @@ block content
         small  #{pageHeader.strapLine}
   .row
     .col-12.col-md-8
-      each location in locations
+      each location in locations ? locations : []
         .card
           .card-block
             h4
               a(href="/location")= location.name
               small &nbsp;
                 +outputRating(location.rating)
-              span.badge.badge-pill.badge-default.float-right #{location.distance}
+              span.badge.badge-pill.badge-default.float-right 1000
             p.address #{location.address}
             .facilities
               each facility in location.facilities
