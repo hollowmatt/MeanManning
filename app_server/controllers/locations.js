@@ -1,38 +1,28 @@
 const dotenv = require('dotenv');
+const request = require('request');
 dotenv.config();
 const API = process.env.API;
+const apiOptions = {
+  server: 'http://localhost:3000'
+};
+
 const homeList = (req, res) => {
-  res.render('locations-list', {
-    title: 'Home Page',
-    pageHeader: {
-      title: 'Loc8r',
-      strapLine: 'Find places to work with wifi near you'
-    },
-    sidebar: "Looking for wifi and a seat? Loc8r helps you find places to " + 
-      "work when out and about. Perhaps with coffee, cake or a pint? " +
-      "Let Loc8r help you find the place you're looking for.",
-    locations: [{
-      name: 'Starcups',
-      address: '125 High Street, Reading, Rg6 1PS',
-      rating: 3,
-      facilities: ['Hot Drinks', 'Food', 'Premium WiFi'],
-      distance: '100m'
-    },
-    {
-      name: 'Cafe Hero',
-      address: '125 High Street, Reading, RG6 1PS',
-      rating: 4,
-      facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-      distance: '200m'
-    },
-    {
-      name: 'Burger Queen',
-      address: '125 High Street, Reading, RG6 1PS',
-      rating: 2,
-      facilities: ['Food', 'Premium wifi'],
-      distance: '250m'
-    }]
-  });
+  const path = '/api/locations';
+  const requestOptions = {
+    url: `${apiOptions.server}${path}`,
+    method: 'GET',
+    json: {},
+    qs: {
+      lng: -0.7992599,
+      lat: 51.378091,
+      maxDistance: 20
+    }
+  };
+  request(requestOptions, 
+    (err, response, body) => {
+      renderHomepage(req, res, body);
+    }
+  )
 };
 
 const locationInfo = (req, res) => {
@@ -97,6 +87,33 @@ const addReview = (req, res) => {
       title: 'Review Starcups'
     }
   });
+};
+
+//private methods
+const renderHomepage = (req, res, responseBody) => {
+  let message = null;
+  if (!(responseBody instanceof Array)) {
+    message = 'API lookup error';
+    responseBody = [];
+  } else {
+    if (!responseBody.length) {
+      message = 'No places found nearby';
+    }
+  }
+  res.render('locations-list',
+    {
+      title: 'Home Page',
+        pageHeader: {
+          title: 'Loc8r',
+          strapLine: 'Find places to work with wifi near you'
+        },
+        sidebar: "Looking for wifi and a seat? Loc8r helps you find places to " + 
+          "work when out and about. Perhaps with coffee, cake or a pint? " +
+          "Let Loc8r help you find the place you're looking for.",
+        locations: responseBody,
+      message
+    }
+  );
 };
 
 module.exports = {
