@@ -2,12 +2,47 @@ const mongoose = require('mongoose');
 const Loc = mongoose.model('Location');
 
 async function locationsListByDistance(req, res) {
-  const locations = await Loc
-    .find()
-    .exec();
-  return res
-    .status(200)
-    .json(locations);
+  const lng = parseFloat(req.query.lng);
+  const lat = parseFloat(req.query.lat);
+  const near = {
+    type: "Point",
+    coordinates: [lng, lat]
+  }
+  const geoOptions = {
+    distanceField: "distance.calculated",
+    key: 'coords',
+    spherical: true,
+    maxDistance: 20000,
+    limit: 10
+  };
+  try {
+    const results = await Loc.aggregate([
+      {
+        $geoNear: {
+          near,
+          ...geoOptions
+        }
+      }
+    ]);
+    const locations = results.map(result => {
+      return {
+        _id: result._id,
+        name: result.name,
+        address: result.address,
+        rating: result.rating,
+        facilities: result.facilities,
+        distance: `${result.distance.calculated.toFixed()}`
+      }
+    });
+    return res
+      .status(200)
+      .json(locations);
+  } catch(err) {
+    console.log(err);
+    return res
+      .status(404)
+      .json(err);
+  }
 };
 
 async function locationsCreate(req, res) {
