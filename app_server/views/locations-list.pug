@@ -15,7 +15,7 @@ block content
               a(href="/location")= location.name
               small &nbsp;
                 +outputRating(location.rating)
-              span.badge.badge-pill.badge-default.float-right 1000
+              span.badge.badge-pill.badge-default.float-right #{location.distance}
             p.address #{location.address}
             .facilities
               each facility in location.facilities
