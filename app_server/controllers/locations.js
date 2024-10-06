@@ -20,7 +20,12 @@ const homeList = (req, res) => {
   };
   request(requestOptions, 
     (err, response, body) => {
-      renderHomepage(req, res, body);
+      let data = [];
+      data = body.map((item) => {
+        item.distance = formatDistance(item.distance);
+        return item;
+      });
+      renderHomepage(req, res, data);
     }
   )
 };
@@ -98,7 +103,15 @@ const renderDetailPage = (req, res, location) => {
 };
 
 const formatDistance = (distance) => {
-
+  let thisDistance = 0;
+  let unit = 'm';
+  if (distance > 1000) {
+    thisDistance = parseFloat(distance / 1000).toFixed(1);
+    unit = 'km';
+  } else {
+    thisDistance = Math.floor(distance);
+  }
+  return thisDistance + unit;
 };
 
 module.exports = {

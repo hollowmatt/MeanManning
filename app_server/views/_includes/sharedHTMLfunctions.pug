@@ -3,3 +3,12 @@ mixin outputRating(rating)
     i.fas.fa-star 
   - for (i = rating; i < 5; i++)
     i.far.fa-star
+
+mixin formatDate(dateString)
+  - const date = new Date(dateString)
+  - const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  - const d = date.getDate();
+  - const m = monthNames[date.getMonth()];
+  - const y = date.getFullYear();
+  - const output = `${d} ${m} ${y}`;
+  =output
