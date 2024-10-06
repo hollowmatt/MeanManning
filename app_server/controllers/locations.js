@@ -26,6 +26,46 @@ const homeList = (req, res) => {
 };
 
 const locationInfo = (req, res) => {
+  renderDetailPage(req, res);
+};
+
+const addReview = (req, res) => {
+  res.render('location-review-form', {
+    title: 'Add Review Page',
+    pageHeader: {
+      title: 'Review Starcups'
+    }
+  });
+};
+
+//private methods
+const renderHomepage = (req, res, responseBody) => {
+  let message = null;
+  if (!(responseBody instanceof Array)) {
+    message = 'API lookup error';
+    responseBody = [];
+  } else {
+    if (!responseBody.length) {
+      message = 'No places found nearby';
+    }
+  }
+  res.render('locations-list',
+    {
+      title: 'Home Page',
+        pageHeader: {
+          title: 'Loc8r',
+          strapLine: 'Find places to work with wifi near you'
+        },
+        sidebar: "Looking for wifi and a seat? Loc8r helps you find places to " + 
+          "work when out and about. Perhaps with coffee, cake or a pint? " +
+          "Let Loc8r help you find the place you're looking for.",
+        locations: responseBody,
+      message
+    }
+  );
+};
+
+const renderDetailPage = (req, res) => {
   res.render('location-info',
     {
       title: 'Starcups',
@@ -76,42 +116,6 @@ const locationInfo = (req, res) => {
           }
         ]
       }
-    }
-  );
-};
-
-const addReview = (req, res) => {
-  res.render('location-review-form', {
-    title: 'Add Review Page',
-    pageHeader: {
-      title: 'Review Starcups'
-    }
-  });
-};
-
-//private methods
-const renderHomepage = (req, res, responseBody) => {
-  let message = null;
-  if (!(responseBody instanceof Array)) {
-    message = 'API lookup error';
-    responseBody = [];
-  } else {
-    if (!responseBody.length) {
-      message = 'No places found nearby';
-    }
-  }
-  res.render('locations-list',
-    {
-      title: 'Home Page',
-        pageHeader: {
-          title: 'Loc8r',
-          strapLine: 'Find places to work with wifi near you'
-        },
-        sidebar: "Looking for wifi and a seat? Loc8r helps you find places to " + 
-          "work when out and about. Perhaps with coffee, cake or a pint? " +
-          "Let Loc8r help you find the place you're looking for.",
-        locations: responseBody,
-      message
     }
   );
 };
