@@ -40,6 +40,12 @@ const locationInfo = (req, res) => {
   request(
     requestOptions, (err, response, body) => {
       const data = body;
+      if(!body.coords) {
+        console.log("no coords");
+        return res
+          .status(400)
+          .json({"message":"no coordinates given: required"});
+      }
       data.coords = {
         lng: body.coords[0],
         lat: body.coords[1]
