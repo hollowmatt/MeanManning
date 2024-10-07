@@ -12,7 +12,7 @@ async function locationsListByDistance(req, res) {
     distanceField: "distance.calculated",
     key: 'coords',
     spherical: true,
-    maxDistance: 20000,
+    maxDistance: 20000000000,
     limit: 10
   };
   try {
@@ -51,14 +51,11 @@ async function locationsCreate(req, res) {
       name: req.body.name,
       address: req.body.address,
       facilities: req.body.facilities.split(","),
-      coords: {
-        type: "Point",
-        coordinates: [
+      coords: [
           parseFloat(req.body.lng),
           parseFloat(req.body.lat)
-        ]
-      },
-      openTimes: [
+        ],
+      openingTimes: [
         {
           days: req.body.days1,
           opening: req.body.opening1,
@@ -122,14 +119,11 @@ async function locationsUpdateOne(req, res) {
     location.name = req.body.name;
     location.address = req.body.address;
     location.facilities = req.body.facilities.split(',');
-    location.coords = {
-      type: "Point",
-      coordinates: [
+    location.coords = [
         parseFloat(req.body.lng),
         parseFloat(req.body.lat)
-      ]
-    };
-    location.openTimes = [
+      ];
+    location.openingTimes = [
       {
         days: req.body.days1,
         opening: req.body.opening1,
