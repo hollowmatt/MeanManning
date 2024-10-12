@@ -60,10 +60,14 @@ const addReview = (req, res) => {
   res.render('location-review-form', {
     title: 'Add Review Page',
     pageHeader: {
-      title: 'Review Starcups'
+      title: 'New Review'
     }
   });
 };
+
+const doAddReview = (req, res) => {
+  console.log("save me");
+}
 
 //private methods
 const renderHomepage = (req, res, responseBody) => {
@@ -123,5 +127,6 @@ const formatDistance = (distance) => {
 module.exports = {
   homeList, 
   locationInfo,
-  addReview
+  addReview,
+  doAddReview
 };
