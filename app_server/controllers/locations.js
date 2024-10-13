@@ -31,38 +31,15 @@ const homeList = (req, res) => {
 };
 
 const locationInfo = (req, res) => {
-  const path = `/api/locations/${req.params.locationId}`;
-  const requestOptions = {
-    url: `${apiOptions.server}${path}`,
-    method: 'GET',
-    json: {}
-  };
-  request(
-    requestOptions, (err, response, body) => {
-      const data = body;
-      if(!body.coords) {
-        console.log("no coords");
-        return res
-          .status(400)
-          .json({"message":"no coordinates given: required"});
-      }
-      data.coords = {
-        lng: body.coords[0],
-        lat: body.coords[1]
-      };
-      data.api = API;
-      renderDetailPage(req, res, data);
-    }
+  getLocationInfo(req, res, 
+    (req, res, data) => renderDetailPage(req, res, data)
   );
 };
 
 const addReview = (req, res) => {
-  res.render('location-review-form', {
-    title: 'Add Review Page',
-    pageHeader: {
-      title: 'New Review'
-    }
-  });
+  getLocationInfo(req, res, 
+    (req, res, data) => renderReviewForm(req, res, data)
+  );
 };
 
 const doAddReview = (req, res) => {
@@ -70,6 +47,53 @@ const doAddReview = (req, res) => {
 }
 
 //private methods
+const getLocationInfo = (req, res, callback) => {
+  const path = `/api/locations/${req.params.locationId}`;
+  const requestOptions = {
+    url: `${apiOptions.server}${path}`,
+    method: 'GET',
+    json: {}
+  };
+  request(
+    requestOptions, (err, {statusCode}, body) => {
+      const data = body;
+      if (statusCode === 200) {
+        if(!body.coords) {
+          console.log("no coords");
+          return res
+            .status(400)
+            .json({"message":"no coordinates given: required"});
+        }
+        data.coords = {
+          lng: body.coords[0],
+          lat: body.coords[1]
+        };
+        data.api = API;
+        callback(req, res, data);
+      } else {
+        showError(req, res, statusCode);
+      }
+    }
+  );
+};
+
+const showError = (req, res, status) => {
+  let title = '';
+  let content = '';
+  if (status === 404) {
+    title = '404, this is not the page you are looking for';
+    content = 'Nothing to see here, move along, move along.';
+  } else {
+    title = `${status}: uh-oh`;
+    content = 'somehow, somewhere, something went wrong.';
+  }
+  res.status(status);
+  res.render('generic-text', {
+    title,
+    content
+  });
+};
+
 const renderHomepage = (req, res, responseBody) => {
   let message = null;
   if (!(responseBody instanceof Array)) {
@@ -111,6 +135,15 @@ const renderDetailPage = (req, res, location) => {
     }
   );
 };
+
+const renderReviewForm = (req, res, {name}) => {
+  res.render('location-review-form', {
+    title: `Review ${name}`,
+    pageHeader: {
+      title: `New Review for ${name}`
+    }
+  });
+}
 
 const formatDistance = (distance) => {
   let thisDistance = 0;

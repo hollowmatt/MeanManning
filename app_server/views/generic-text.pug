@@ -5,6 +5,4 @@ block content
       h1= title
   .row
     .col-12.col-lg-8
-      each item in body 
-        p
-          | #{item} 
+      p !{(content).replace(/\n/g, '<br/>')}
