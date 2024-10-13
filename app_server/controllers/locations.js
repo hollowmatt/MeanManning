@@ -31,6 +31,10 @@ const homeList = (req, res) => {
 };
 
 const locationInfo = (req, res) => {
+  getLocationInfo(req, res, (req, res, data) => renderDetailPage(req, res, data));
+};
+
+const getLocationInfo = (req, res, callback) => {
   const path = `/api/locations/${req.params.locationId}`;
   const requestOptions = {
     url: `${apiOptions.server}${path}`,
@@ -51,18 +55,13 @@ const locationInfo = (req, res) => {
         lat: body.coords[1]
       };
       data.api = API;
-      renderDetailPage(req, res, data);
+      callback(req, res, data);
     }
   );
 };
 
 const addReview = (req, res) => {
-  res.render('location-review-form', {
-    title: 'Add Review Page',
-    pageHeader: {
-      title: 'New Review'
-    }
-  });
+  renderReviewForm(req, res);
 };
 
 const doAddReview = (req, res) => {
@@ -111,6 +110,15 @@ const renderDetailPage = (req, res, location) => {
     }
   );
 };
+
+const renderReviewForm = (req, res) => {
+  res.render('location-review-form', {
+    title: 'New Review',
+    pageHeader: {
+      title: "New Review"
+    }
+  });
+}
 
 const formatDistance = (distance) => {
   let thisDistance = 0;
