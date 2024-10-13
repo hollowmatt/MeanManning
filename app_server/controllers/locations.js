@@ -43,7 +43,6 @@ const addReview = (req, res) => {
 };
 
 const doAddReview = (req, res) => {
-  console.log("save me");
   const postData = {
     author: req.body.name,
     rating: parseInt(req.body.rating, 10),
@@ -57,15 +56,19 @@ const doAddReview = (req, res) => {
     method: 'POST',
     json: postData
   };
-  request(
-    requestOptions, (err, {statusCode}, body) => {
-      if (statusCode === 201) {
-        res.redirect(`/location/${id}`);
-      } else {
-        showError(req, res, statusCode);
+  if (!postData.author || !postData.rating || !postData.reviewText) {
+    res.redirect(`/location/${id}/review/new?err=val`);
+  } else {
+    request(
+      requestOptions, (err, {statusCode}, body) => {
+        if (statusCode === 201) {
+          res.redirect(`/location/${id}`);
+        } else {
+          showError(req, res, statusCode);
+        }
       }
-    }
-  );
+    );
+  }
 };
 
 //private methods
