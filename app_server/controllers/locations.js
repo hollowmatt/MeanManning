@@ -31,11 +31,15 @@ const homeList = (req, res) => {
 };
 
 const locationInfo = (req, res) => {
-  getLocationInfo(req, res, (req, res, data) => renderDetailPage(req, res, data));
+  getLocationInfo(req, res, 
+    (req, res, data) => renderDetailPage(req, res, data)
+  );
 };
 
 const addReview = (req, res) => {
-  renderReviewForm(req, res);
+  getLocationInfo(req, res, 
+    (req, res, data) => renderReviewForm(req, res, data)
+  );
 };
 
 const doAddReview = (req, res) => {
@@ -132,11 +136,11 @@ const renderDetailPage = (req, res, location) => {
   );
 };
 
-const renderReviewForm = (req, res) => {
+const renderReviewForm = (req, res, {name}) => {
   res.render('location-review-form', {
-    title: 'New Review',
+    title: `Review ${name}`,
     pageHeader: {
-      title: "New Review"
+      title: `New Review for ${name}`
     }
   });
 }
