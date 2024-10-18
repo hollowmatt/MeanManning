@@ -46,7 +46,6 @@ async function doAddReview(req, res, location) {
         console.log(err);
         res.status(400).json(err);
       });
-    
   }
 }
 
