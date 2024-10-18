@@ -35,11 +35,17 @@ async function doAddReview(req, res, location) {
       rating,
       reviewText
     });
-    location.save();
-    updateAvgRating(location._id);
-    res
-      .status(201)
-      .json({"message":"review added"});
+    location.save()
+      .then(function(location){
+        updateAvgRating(location._id);
+        res
+          .status(201)
+          .json({"message":"review added"});
+      })
+      .catch(function(err) {
+        console.log(err);
+        res.status(400).json(err);
+      });
   }
 }
 

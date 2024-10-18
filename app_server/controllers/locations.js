@@ -60,14 +60,16 @@ const doAddReview = (req, res) => {
     res.redirect(`/location/${id}/review/new?err=val`);
   } else {
     request(
-      requestOptions, (err, {statusCode}, body) => {
+      requestOptions, (err, {statusCode}, {name}) => {
         if (statusCode === 201) {
           res.redirect(`/location/${id}`);
+        } else  if (statusCode === 400
+            && name && name === 'ValidationError') {
+              res.redirect(`/location/${id}/review/new?err=val`);
         } else {
-          showError(req, res, statusCode);
+            showError(req, res, statusCode);
         }
-      }
-    );
+      });
   }
 };
 
@@ -166,7 +168,8 @@ const renderReviewForm = (req, res, {name}) => {
     title: `Review ${name}`,
     pageHeader: {
       title: `New Review for ${name}`
-    }
+    },
+    error: req.query.err
   });
 }
 
